@@ -1,0 +1,110 @@
+﻿@model List<Book>
+@{
+    Layout = "__ClientLayout";
+}
+<main class="cd__main">
+    <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative">
+        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
+            @foreach (var book in Model)
+            {
+                var mol = "#myModal" + book.Id + "";
+                <div class="col-3 hp mt-4">
+                    <div class="card shadow-sm">
+                            <a data-toggle="modal" data-target="@mol" id="bookId" style="cursor:pointer;">
+                                <input id="int" value="@book.Id" type="hidden">
+                            <img src="~/image/@book.Image" class="card-img-top" alt="@book.Title" />
+                        </a>
+                        <div class="label-top shadow-sm bg-danger">
+                            <a class="text-white" href="#">New</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="clearfix mb-3">
+                                <span class="float-start badge rounded-pill bg-success">$@book.Price</span>
+
+                                <span class="float-end"><a href="#" class="small text-muted text-uppercase aff-link">reviews</a></span>
+                            </div>
+                            <h5 class="card-title">
+                                <a target="_blank" href="#">Title: @book.Title</a>
+                                <br>
+                                <span>Author: @book.Author</span>
+                            </h5>
+
+                            <div class="d-grid gap-2 my-4">
+
+                                <form asp-controller="Cart" asp-action="AddToCart">
+                                    <input type="hidden" name="Id" value="@book.Id">
+                                    <input type="submit" value="Add to cart" class="btn btn-warning bold-btn">
+                                </form>
+                            </div>
+                            <div class="clearfix mb-1">
+
+                                <span class="float-start"><a href="#"><i class="fas fa-question-circle"></i></a></span>
+
+                                <span class="float-end">
+                                    <i class="far fa-heart" style="cursor: pointer"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>
+@foreach(var bookModal in Model)
+{
+    var modal = "myModal" + bookModal.Id + "";
+    <div class="modal fade bd-example-modal-lg" id="@modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                    <div class="modal-body" >
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5 col-xs-15">
+                                <div class="modal-tab">
+                                    <div class="product-details-large tab-content">
+                                        <div class="tab-pane active" id="image-1">
+                                            <img src="~/image/@Html.DisplayFor(modelItem => bookModal.Image)" class="card-img-top" alt="@bookModal.Title" />
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-xs-12">
+                                <div class="modal-pro-content">
+                                <h3>@bookModal.Title</h3>
+                                <h3>Author: @bookModal.Author</h3>
+                                <h6>Publisher: @bookModal.Publisher</h6>
+                                    <div class="price">
+                                        
+                                    <span>Price: $@bookModal.Price</span>
+                                    </div>
+                                    
+                                    <p class="text-justify">Description: @bookModal.Description</p>
+
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="get">
+                                        <input type="number" value="1" disabled/>
+                                        <input type="hidden" name="Id" value="@bookModal.Id">
+                                        <input type="submit" value="Add to cart" class="btn btn-warning bold-btn">
+                                    </form>
+                                @{
+                                    var stock = "Stock";
+                                    if (bookModal.Quantity > 0)
+                                    {
+                                        stock = "In stock";
+                                    }
+                                }
+                                    <span><i class="fa fa-check"></i>@stock</span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+

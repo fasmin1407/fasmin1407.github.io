@@ -1,0 +1,23 @@
+﻿@model List<Bill>
+@{
+    Layout = "__ClientLayout";
+    
+}
+        <table class="table table-bordered">
+            <tr>
+                <th>Oder date</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Total</th>
+            </tr>
+            
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderDate</td>
+                <td>@item.Phone</td>
+                <td>@item.Address</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+        </table> 
